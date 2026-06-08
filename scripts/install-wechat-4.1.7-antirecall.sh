@@ -130,6 +130,51 @@ wechat_pids() {
   pgrep -f "${APP_PATH}/Contents" || true
 }
 
+block_sparkle_user_preferences() {
+  local domains=(
+    "com.tencent.xinWeChat"
+    "5A4RE8SF68.com.tencent.xinWeChat"
+  )
+
+  for domain in "${domains[@]}"; do
+    defaults write "${domain}" SUFeedURL -string "http://127.0.0.1/blocked-wechat-appcast.xml"
+    defaults write "${domain}" SUEnableAutomaticChecks -bool false
+    defaults write "${domain}" SUAutomaticallyUpdate -bool false
+    defaults write "${domain}" SUAllowsAutomaticUpdates -bool false
+    defaults write "${domain}" SUEnableInstallerLauncherService -bool false
+    defaults write "${domain}" SUSendProfileInfo -bool false
+    defaults write "${domain}" SUScheduledCheckInterval -int 315360000
+    defaults delete "${domain}" SULastCheckTime >/dev/null 2>&1 || true
+    defaults delete "${domain}" SUSkippedVersion >/dev/null 2>&1 || true
+    defaults delete "${domain}" SUUpdateGroupIdentifier >/dev/null 2>&1 || true
+  done
+
+  killall cfprefsd >/dev/null 2>&1 || true
+}
+
+clear_wechat_update_caches() {
+  local data_home="${HOME}/Library/Containers/com.tencent.xinWeChat/Data"
+  local paths=(
+    "${data_home}/Library/Caches/com.tencent.xinWeChat/org.sparkle-project.Sparkle"
+    "${data_home}/Documents/app_data/xplugin/plugins/MacUpdate"
+    "${data_home}/Documents/app_data/xplugin/plugins/MacStoreUpdate"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_update_info"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_update_info.crc"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_schedule_info_MacUpdate"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_schedule_info_MacUpdate.crc"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_schedule_info_MacStoreUpdate"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_schedule_info_MacStoreUpdate.crc"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_version_info_MacUpdate"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_version_info_MacUpdate.crc"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_version_info_MacStoreUpdate"
+    "${data_home}/Documents/app_data/xplugin/info/plugin_version_info_MacStoreUpdate.crc"
+  )
+
+  for path in "${paths[@]}"; do
+    rm -rf "${path}"
+  done
+}
+
 if [[ "${QUIT_WECHAT}" -eq 1 ]]; then
   running_pids="$(wechat_pids)"
   if [[ -n "${running_pids}" ]]; then
@@ -223,6 +268,10 @@ echo "Installing stable static anti-recall patch and update blocker..."
 "${TOOL_PATH}" "${install_args[@]}"
 
 if [[ "${DRY_RUN}" -eq 0 ]]; then
+  echo "Blocking Sparkle user preferences and clearing update caches..."
+  block_sparkle_user_preferences
+  clear_wechat_update_caches
+
   echo "Verifying no runtime dylib injection is present..."
   if otool -L "${MACHO_PATH}" | grep -E 'WeChatAntiRecall|libWeChatAntiRecall|@loader_path/libWeChatAntiRecall' >/dev/null; then
     die "runtime anti-recall dylib is still linked in ${MACHO_PATH}"
