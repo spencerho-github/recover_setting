@@ -1,5 +1,5 @@
 -- ============================================================================
--- LSP 配置
+-- LSP 配置（使用 Neovim 0.11+ 新 API）
 -- ============================================================================
 
 -- Mason 自动安装
@@ -34,46 +34,45 @@ end
 -- LSP 能力
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
--- 配置各个 LSP 服务器
-local lspconfig = require("lspconfig")
-
-lspconfig.lua_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { "vim" },
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
-        checkThirdParty = false,
-      },
-      telemetry = {
-        enable = false,
+-- 配置各个 LSP 服务器（使用新的 vim.lsp.config API）
+local servers = {
+  lua_ls = {
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file("", true),
+          checkThirdParty = false,
+        },
+        telemetry = {
+          enable = false,
+        },
       },
     },
   },
-})
+  pyright = {},
+  ts_ls = {},
+  html = {},
+  cssls = {},
+}
 
-lspconfig.pyright.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
+-- 使用新的 vim.lsp.config API
+for server, config in pairs(servers) do
+  vim.lsp.config(server, vim.tbl_deep_extend("force", {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }, config))
+end
 
-lspconfig.ts_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
-
-lspconfig.html.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
-
-lspconfig.cssls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
+-- 启用所有配置的 LSP 服务器
+vim.lsp.enable({
+  "lua_ls",
+  "pyright",
+  "ts_ls",
+  "html",
+  "cssls",
 })
 
 -- 诊断符号
