@@ -11,7 +11,7 @@ g.maplocalleader = " "
 
 -- 行号
 opt.number = true
-opt.relativenumber = false
+opt.relativenumber = true  -- 2026 推荐：相对行号
 
 -- 缩进
 opt.tabstop = 4
@@ -46,7 +46,7 @@ opt.splitbelow = true
 opt.splitright = true
 
 -- 编辑体验
-opt.mouse = "a"
+opt.mouse = "nci"  -- 2026 推荐：禁用 visual 模式的鼠标
 opt.clipboard = "unnamedplus"
 opt.undofile = true
 opt.undolevels = 10000
@@ -57,7 +57,7 @@ opt.swapfile = false
 -- 性能
 opt.updatetime = 200
 opt.timeoutlen = 300
-opt.completeopt = "menu,menuone,noselect"
+opt.completeopt = "menu,menuone,noselect,preview"
 
 -- 文件编码
 opt.encoding = "utf-8"
@@ -76,9 +76,9 @@ opt.foldenable = false
 opt.wildmode = "longest:full,full"
 opt.wildoptions = "pum"
 
--- 列表字符
-opt.list = true
-opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
+-- 列表字符（隐藏以获得更简洁的界面）
+opt.list = false
+-- opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
 
 -- 填充字符
 opt.fillchars = {

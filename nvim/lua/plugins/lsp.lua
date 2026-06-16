@@ -31,8 +31,10 @@ local on_attach = function(_, bufnr)
   end, { buffer = bufnr, desc = "格式化代码" })
 end
 
--- LSP 能力
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- LSP 能力（使用原生 LSP 能力）
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- 启用 snippets 支持
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- 配置各个 LSP 服务器（使用新的 vim.lsp.config API）
 local servers = {
