@@ -2,64 +2,56 @@
 -- Neovim 0.12+ 原生插件管理（使用 vim.pack）
 -- ============================================================================
 
--- 定义插件列表
-local plugins = {
+-- 使用 vim.pack.add() 添加插件
+vim.pack.add({
   -- 主题
-  "projekt0n/github-nvim-theme",
+  { name = "github-nvim-theme", url = "https://github.com/projekt0n/github-nvim-theme" },
 
   -- 文件浏览
-  "nvim-tree/nvim-tree.lua",
-  "nvim-tree/nvim-web-devicons",
+  { name = "nvim-tree.lua", url = "https://github.com/nvim-tree/nvim-tree.lua" },
+  { name = "nvim-web-devicons", url = "https://github.com/nvim-tree/nvim-web-devicons" },
 
   -- 模糊查找
-  "nvim-telescope/telescope.nvim",
-  "nvim-lua/plenary.nvim",
+  { name = "telescope.nvim", url = "https://github.com/nvim-telescope/telescope.nvim" },
+  { name = "plenary.nvim", url = "https://github.com/nvim-lua/plenary.nvim" },
 
   -- 语法高亮
-  "nvim-treesitter/nvim-treesitter",
+  { name = "nvim-treesitter", url = "https://github.com/nvim-treesitter/nvim-treesitter" },
 
   -- LSP
-  "neovim/nvim-lspconfig",
-  "williamboman/mason.nvim",
-  "williamboman/mason-lspconfig.nvim",
+  { name = "nvim-lspconfig", url = "https://github.com/neovim/nvim-lspconfig" },
+  { name = "mason.nvim", url = "https://github.com/williamboman/mason.nvim" },
+  { name = "mason-lspconfig.nvim", url = "https://github.com/williamboman/mason-lspconfig.nvim" },
 
   -- 自动补全
-  "hrsh7th/nvim-cmp",
-  "hrsh7th/cmp-nvim-lsp",
-  "hrsh7th/cmp-buffer",
-  "hrsh7th/cmp-path",
-  "L3MON4D3/LuaSnip",
-  "saadparwaiz1/cmp_luasnip",
+  { name = "nvim-cmp", url = "https://github.com/hrsh7th/nvim-cmp" },
+  { name = "cmp-nvim-lsp", url = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+  { name = "cmp-buffer", url = "https://github.com/hrsh7th/cmp-buffer" },
+  { name = "cmp-path", url = "https://github.com/hrsh7th/cmp-path" },
+  { name = "LuaSnip", url = "https://github.com/L3MON4D3/LuaSnip" },
+  { name = "cmp_luasnip", url = "https://github.com/saadparwaiz1/cmp_luasnip" },
 
   -- 状态栏
-  "nvim-lualine/lualine.nvim",
+  { name = "lualine.nvim", url = "https://github.com/nvim-lualine/lualine.nvim" },
 
   -- Git
-  "lewis6991/gitsigns.nvim",
+  { name = "gitsigns.nvim", url = "https://github.com/lewis6991/gitsigns.nvim" },
 
   -- 注释
-  "numToStr/Comment.nvim",
+  { name = "Comment.nvim", url = "https://github.com/numToStr/Comment.nvim" },
 
   -- 自动配对
-  "windwp/nvim-autopairs",
+  { name = "nvim-autopairs", url = "https://github.com/windwp/nvim-autopairs" },
 
   -- 缩进线
-  "lukas-reineke/indent-blankline.nvim",
+  { name = "indent-blankline.nvim", url = "https://github.com/lukas-reineke/indent-blankline.nvim" },
 
   -- 通知
-  "rcarriga/nvim-notify",
+  { name = "nvim-notify", url = "https://github.com/rcarriga/nvim-notify" },
 
   -- 快捷键提示
-  "folke/which-key.nvim",
-}
-
--- 使用 vim.pack.add() 添加插件
-for _, plugin in ipairs(plugins) do
-  vim.pack.add({
-    name = plugin:match("([^/]+)$"),
-    url = "https://github.com/" .. plugin,
-  })
-end
+  { name = "which-key.nvim", url = "https://github.com/folke/which-key.nvim" },
+})
 
 -- ============================================================================
 -- 插件配置
