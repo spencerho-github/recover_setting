@@ -59,53 +59,71 @@ vim.pack.add({
 -- ============================================================================
 
 -- 主题配置
-require("github-theme").setup({
-  options = {
-    transparent = false,
-    terminal_colors = true,
-    dim_inactive = true,
-    styles = {
-      comments = "italic",
-      keywords = "NONE",
-      types = "NONE",
-      functions = "NONE",
-      variables = "NONE",
+local ok, github_theme = pcall(require, "github-theme")
+if ok then
+  github_theme.setup({
+    options = {
+      transparent = false,
+      terminal_colors = true,
+      dim_inactive = true,
+      styles = {
+        comments = "italic",
+        keywords = "NONE",
+        types = "NONE",
+        functions = "NONE",
+        variables = "NONE",
+      },
     },
-  },
-})
-vim.cmd("colorscheme github_dark_default")
+  })
+  vim.cmd("colorscheme github_dark_default")
+end
 
--- 加载其他插件配置
-require("plugins.nvim-tree")
-require("plugins.telescope")
-require("plugins.treesitter")
-require("plugins.lsp")
-require("plugins.cmp")
-require("plugins.lualine")
-require("plugins.gitsigns")
+-- 加载其他插件配置（使用 pcall 防止插件未安装时报错）
+pcall(require, "plugins.nvim-tree")
+pcall(require, "plugins.telescope")
+pcall(require, "plugins.treesitter")
+pcall(require, "plugins.lsp")
+pcall(require, "plugins.cmp")
+pcall(require, "plugins.lualine")
+pcall(require, "plugins.gitsigns")
 
 -- Comment.nvim
-require("Comment").setup()
+ok = pcall(require, "Comment")
+if ok then
+  require("Comment").setup()
+end
 
 -- nvim-autopairs
-require("nvim-autopairs").setup()
+ok = pcall(require, "nvim-autopairs")
+if ok then
+  require("nvim-autopairs").setup()
+end
 
 -- indent-blankline
-require("ibl").setup({
-  indent = { char = "│" },
-  scope = { enabled = false },
-})
+ok = pcall(require, "ibl")
+if ok then
+  require("ibl").setup({
+    indent = { char = "│" },
+    scope = { enabled = false },
+  })
+end
 
 -- nvim-notify
-vim.notify = require("notify")
-require("notify").setup({
-  background_colour = "#000000",
-  timeout = 3000,
-})
+ok = pcall(require, "notify")
+if ok then
+  vim.notify = require("notify")
+  require("notify").setup({
+    background_colour = "#000000",
+    timeout = 3000,
+  })
+end
 
 -- which-key
-require("which-key").setup({
-  window = {
-    border = "single",
-  },
-})
+ok = pcall(require, "which-key")
+if ok then
+  require("which-key").setup({
+    window = {
+      border = "single",
+    },
+  })
+end
