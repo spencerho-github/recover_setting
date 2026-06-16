@@ -36,4 +36,5 @@ telescope.setup({
 })
 
 -- 加载扩展
-telescope.load_extension("fzf")
+-- 注意：fzf 扩展需要先编译，运行：cd ~/.local/share/nvim/pack/opt/telescope-fzf-native.nvim && make
+-- telescope.load_extension("fzf")

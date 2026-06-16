@@ -13,6 +13,7 @@ vim.pack.add({
 
   -- 模糊查找
   { name = "telescope.nvim", src = "https://github.com/nvim-telescope/telescope.nvim" },
+  { name = "telescope-fzf-native.nvim", src = "https://github.com/nvim-telescope/telescope-fzf-native.nvim" },
   { name = "plenary.nvim", src = "https://github.com/nvim-lua/plenary.nvim" },
 
   -- 语法高亮
